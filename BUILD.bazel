@@ -1,0 +1,18 @@
+load("@gazelle//:def.bzl", "gazelle")
+load("@rules_go//go:def.bzl", "go_library", "go_test")
+
+# gazelle:prefix github.com/lfousse/generalizedregexp
+gazelle(name = "gazelle")
+
+go_library(
+    name = "generalizedregexp",
+    srcs = ["regexp.go"],
+    importpath = "github.com/lfousse/generalizedregexp",
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "generalizedregexp_test",
+    srcs = ["regexp_test.go"],
+    deps = [":generalizedregexp"],
+)

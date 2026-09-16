@@ -1,0 +1,29 @@
+module(
+    name = "generalizedregexp",
+    compatibility_level = 1,
+    version = "0.1.0",
+)
+
+bazel_dep(name = "rules_go", version = "0.63.0")
+bazel_dep(name = "gazelle", version = "0.54.0")
+
+# Not used directly. Bazel injects loads for a set of symbols it no longer defines
+# natively, and resolves the rulesets providing them against the repository mapping
+# of the main module, so they have to be visible from here even when only a
+# dependency uses them. Without this, analysing //:gazelle-runner fails with
+# "No repository visible as '@rules_python' from main repository".
+bazel_dep(name = "rules_python", version = "2.3.3")
+
+# Take the Go SDK version from go.mod so that `bazel build` and `go build` agree
+# on the toolchain. rules_go registers the resulting toolchains itself, so there
+# is no register_toolchains call to keep in sync here.
+go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
+
+go_sdk.from_file(go_mod = "//:go.mod")
+
+# The module has no external Go dependencies yet. Wiring this up now keeps go.mod
+# the single source of truth for the day it does: adding a dependency there is
+# then enough, with no separate list of Bazel repositories to update.
+go_deps = use_extension("@gazelle//:extensions.bzl", "go_deps")
+
+go_deps.from_file(go_mod = "//:go.mod")

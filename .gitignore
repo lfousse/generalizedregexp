@@ -1,0 +1,2 @@
+# Convenience symlinks created by Bazel in the workspace root.
+/bazel-*

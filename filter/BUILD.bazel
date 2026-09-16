@@ -1,0 +1,18 @@
+load("@rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "filter",
+    srcs = ["filter.go"],
+    importpath = "github.com/lfousse/generalizedregexp/filter",
+    visibility = ["//visibility:public"],
+    deps = ["//:generalizedregexp"],
+)
+
+go_test(
+    name = "filter_test",
+    srcs = ["filter_test.go"],
+    deps = [
+        ":filter",
+        "//:generalizedregexp",
+    ],
+)

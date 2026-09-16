@@ -1,0 +1,5 @@
+# Print the output of failing tests instead of just the path to their log.
+test --test_output=errors
+
+# Show the full command line of a failing action.
+build --verbose_failures
